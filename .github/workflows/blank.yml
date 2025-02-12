@@ -1,0 +1,33 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]  # Runs when you push to main
+  pull_request:
+    branches: [ "main" ]  # Runs on PRs to main
+  workflow_dispatch:  # Allows manual execution from GitHub Actions UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Fetches your repository code
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Adjust if needed
+
+      - name: Install Dependencies
+        run: npm install  # If your project uses npm/yarn, this installs packages
+
+      - name: Build Project
+        run: npm run build  # Adjust this if your project has a different build command
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # Deployment branch
+          folder: build  # Change if your output folder is different
